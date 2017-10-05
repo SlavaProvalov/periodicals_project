@@ -1,0 +1,59 @@
+ul {
+    list-style: none; /*убираем маркеры списка*/
+    margin: 0; /*убираем отступы*/
+    padding-left: 0; /*убираем отступы*/
+    margin-top: 25px; /*делаем отступ сверху*/
+    background: #a34a3a; /*добавляем фон всему меню (заменив этот параметр, вы поменяете цвет всего меню)*/
+    height: 50px; /*задаем высоту*/
+}
+
+a {
+    text-decoration: none; /*убираем подчеркивание текста ссылок*/
+    background: #90c843; /*добавляем фон к пункту меню (заменив этот параметр, вы поменяете цвет всех пунктов меню)*/
+    color: #0d0a0c; /*меняем цвет ссылок*/
+    padding: 0px 15px; /*добавляем отступ*/
+    font-family: 'Open Sans', sans-serif; /*меняем шрифт*/
+    line-height: 50px; /*ровняем меню по вертикали*/
+    display: block;
+    border-right: 1px solid #0d0a0c; /*добавляем бордюр справа*/
+    -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+    -o-transition: all 0.3s 0.01s ease;
+    -webkit-transition: all 0.3s 0.01s ease;
+}
+
+a:hover {
+    background: #d4cd2c; /*добавляем эффект при наведении*/
+}
+
+li {
+    float: left; /*Размещаем список горизонтально для реализации меню*/
+}
+
+.languageSelect {
+    float: right;
+    display: block;
+    background: #1fd471;
+    color: #0d0a0c;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 50px;
+    width: 100px;
+    padding: 0px 15px;
+}
+
+.hi {
+    background: #2a94c8;
+    color: #0d0a0c; /*меняем цвет ссылок*/
+    font-family: 'Open Sans', sans-serif; /*меняем шрифт*/
+    line-height: 50px; /*ровняем меню по вертикали*/
+    padding: 0px 15px;
+    display: block;
+    border-right: 1px solid #0d0a0c; /*добавляем бордюр справа*/
+    -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+    -o-transition: all 0.3s 0.01s ease;
+    -webkit-transition: all 0.3s 0.01s ease;
+}
+
+.hi, .newPeriodical, .user_details, .logout {
+    float: right;
+
+}
