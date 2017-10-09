@@ -3,7 +3,7 @@ ul {
     margin: 0; /*убираем отступы*/
     padding-left: 0; /*убираем отступы*/
     margin-top: 25px; /*делаем отступ сверху*/
-    background: #a34a3a; /*добавляем фон всему меню (заменив этот параметр, вы поменяете цвет всего меню)*/
+    background: #aca9ab; /*добавляем фон всему меню (заменив этот параметр, вы поменяете цвет всего меню)*/
     height: 50px; /*задаем высоту*/
 }
 
@@ -21,39 +21,57 @@ a {
     -webkit-transition: all 0.3s 0.01s ease;
 }
 
+.change_language a {
+    line-height: 25px; /*ровняем меню по вертикали*/
+    padding: 0px 5px; /*добавляем отступ*/
+}
+
 a:hover {
-    background: #d4cd2c; /*добавляем эффект при наведении*/
+    background: #d46c1e; /*добавляем эффект при наведении*/
 }
 
 li {
     float: left; /*Размещаем список горизонтально для реализации меню*/
 }
 
-.languageSelect {
-    float: right;
-    display: block;
-    background: #1fd471;
-    color: #0d0a0c;
-    font-family: 'Open Sans', sans-serif;
-    line-height: 50px;
-    width: 100px;
-    padding: 0px 15px;
-}
+
 
 .hi {
     background: #2a94c8;
-    color: #0d0a0c; /*меняем цвет ссылок*/
-    font-family: 'Open Sans', sans-serif; /*меняем шрифт*/
-    line-height: 50px; /*ровняем меню по вертикали*/
+    font-family: 'Open Sans', sans-serif;
+    line-height: 50px;
     padding: 0px 15px;
     display: block;
-    border-right: 1px solid #0d0a0c; /*добавляем бордюр справа*/
-    -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+    border-right: 1px solid #0d0a0c;
+    -moz-transition: all 0.3s 0.01s ease;
     -o-transition: all 0.3s 0.01s ease;
     -webkit-transition: all 0.3s 0.01s ease;
 }
+.hi b {
+    color: #0d0a0c;
+}
 
-.hi, .newPeriodical, .user_details, .logout {
+.hi, .newPeriodical, .user_details, .logout, .change_language {
     float: right;
 
+}
+
+.change_language a {
+    font-family: 'Open Sans', sans-serif;
+    display: block;
+    width: 50px;
+    height: 25px;
+    padding: 0px 10px;
+}
+
+#lang_en:hover, #lang_ru:hover {
+    background: #c6c8c7;
+}
+
+#lang_en {
+    background: #246fc8;
+}
+
+#lang_ru {
+    background: #c83c16;
 }

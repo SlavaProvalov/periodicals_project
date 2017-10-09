@@ -9,7 +9,7 @@ form {
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .45);
 }
 
-/* Стили полей ввода */
+
 .textbox {
     height: 50px;
     width: 100%;
@@ -29,7 +29,7 @@ form {
     color: rgba(24, 149, 215, 1);
 }
 
-/* Стили текстового поля */
+
 .message {
     background: rgba(255, 255, 255, 0.4);
     width: 100%;
@@ -37,7 +37,7 @@ form {
     border: rgba(0, 0, 0, .3) 2px solid;
     box-sizing: border-box;
     -moz-border-radius: 3px;
-    font-size: 18px;
+    font-size: 14px;
     font-family: 'Open Sans', sans-serif;
     -webkit-border-radius: 3px;
     border-radius: 3px;
@@ -47,7 +47,7 @@ form {
     overflow: hidden;
 }
 
-/* Базовые стили кнопки */
+
 .button {
     height: 50px;
     width: 100%;
@@ -64,18 +64,28 @@ form {
     cursor: pointer;
 }
 
-/* Изменение фона кнопки при наведении */
+
 .button:hover {
     background: #80b438;
 }
 
+
+
 b {
     font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #908a89;
+    padding: 5px 0px;
+    margin: 15px 0px;
+
 }
 
 .error {
+    position: relative;
+    text-align: center;
     font-family: 'Open Sans', sans-serif;
     color: #ff3931;
     font-size: 18px;
     padding: 10px;
+    margin: 10px;
 }
