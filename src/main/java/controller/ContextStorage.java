@@ -4,19 +4,19 @@ import model.entity.Periodical;
 
 import java.util.HashMap;
 
-public class HttpContextContent {
-    private static HashMap<Integer, Periodical> periodicals;
+public class ContextStorage {
+    private HashMap<Integer, Periodical> periodicals;
 
 
-    private HttpContextContent() {
+    private ContextStorage() {
         periodicals = new HashMap<>();
     }
 
     private static class Holder {
-        private static final HttpContextContent INSTANCE = new HttpContextContent();
+        private static final ContextStorage INSTANCE = new ContextStorage();
     }
 
-    public static HttpContextContent getInstance() {
+    public static ContextStorage getInstance() {
         return Holder.INSTANCE;
     }
 
