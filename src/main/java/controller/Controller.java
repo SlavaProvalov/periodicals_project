@@ -37,7 +37,8 @@ public class Controller extends HttpServlet {
             dispatcher.forward(request, response);
         } else {
             page = Optional.of(ConfigurationManager.getProperty("path.page.index"));
-            request.getSession().setAttribute("nullPage", MessageManager.getProperty("message.nullPage"));
+            request.getSession().setAttribute("nullPage", ((MessageManager) request.getSession()
+                    .getAttribute("messageManager")).getProperty("message.nullPage"));
             response.sendRedirect(request.getContextPath() + page.get());
         }
     }
