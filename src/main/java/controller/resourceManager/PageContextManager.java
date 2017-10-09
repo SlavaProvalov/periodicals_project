@@ -1,18 +1,22 @@
 package controller.resourceManager;
 
-import config.Localization;
-
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 
 public class PageContextManager {
-    private static final ResourceBundle bundle =
-            ResourceBundle.getBundle("pageContext", Localization.getInstance().getCurrentLocale());
+    private ResourceBundle bundle;
 
-    private PageContextManager() {
+    public PageContextManager(String language) {
+        bundle = ResourceBundle.getBundle("pageContext", new Locale(language));
     }
 
-    public static String getProperty(String key) {
+    public String getProperty(String key) {
         return bundle.getString(key);
     }
+
+    public void changeLocale(String language) {
+        this.bundle = ResourceBundle.getBundle("pageContext", new Locale(language));
+    }
+
 }
