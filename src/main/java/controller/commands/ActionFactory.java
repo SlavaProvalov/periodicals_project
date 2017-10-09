@@ -1,13 +1,16 @@
 package controller.commands;
 
 import controller.resourceManager.MessageManager;
+import controller.utils.UriConverter;
 
 import javax.servlet.http.HttpServletRequest;
 
-public  class ActionFactory {
+public class ActionFactory {
+
+
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand current = new EmptyCommand();
-        String action = request.getRequestURI().toLowerCase().replaceAll(".*periodicals/", "").replaceAll("[?].+", "");// // TODO: 05.10.2017
+        String action = UriConverter.uriToAction(request);
         if (action == null || action.isEmpty()) {
             return current;
         }
@@ -15,7 +18,7 @@ public  class ActionFactory {
             CommandEnum currentEnum = CommandEnum.valueOf(action.toUpperCase());
             current = currentEnum.getCurrentCommand();
         } catch (IllegalArgumentException e) {
-            request.setAttribute("wrongAction", action + MessageManager.getProperty("message.wrongAction"));
+            request.setAttribute("wrongAction", action + ((MessageManager) request.getSession()).getProperty("message.wrongAction"));
         }
         return current;
     }
