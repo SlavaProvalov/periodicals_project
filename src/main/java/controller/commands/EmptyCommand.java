@@ -8,7 +8,7 @@ import java.util.Optional;
 public class EmptyCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.servlet.welcome"));
+        Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.page.index"));
         return page.get();
     }
 }
