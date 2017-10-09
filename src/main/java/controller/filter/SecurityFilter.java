@@ -1,7 +1,9 @@
 package controller.filter;
 
 import controller.resourceManager.ConfigurationManager;
-import model.entity.Role;
+import controller.resourceManager.MessageManager;
+import controller.resourceManager.PageContextManager;
+import controller.utils.UriConverter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,27 +14,34 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter(urlPatterns = {"/"},
+import static model.entity.Role.*;
+
+@WebFilter(urlPatterns = {"/*"},
         dispatcherTypes = {DispatcherType.FORWARD, DispatcherType.REQUEST},
         servletNames = {"Controller"})
 public class SecurityFilter implements Filter {
     private static List<String> adminAllowedCommands;
     private static List<String> userAllowedCommands;
     private static List<String> guestAllowedCommands;
-    private static String userRedirectPage;
-    private static String guestRedirectPage;
+    private static String errorPage;
 
     public SecurityFilter() {
-        adminAllowedCommands = Arrays.asList("logout", "user_details", "new_periodical", "new_periodical_page", "main",
-                "add_to_cart", "delete_from_cart", "cart", "order_page", "order", "order_confirm", "success_page");
+        adminAllowedCommands = Arrays.asList("logout", "user_details", "user_update", "user_update_page", "new_periodical",
+                "new_periodical_page", "main", "add_to_cart",
+                "delete_from_cart", "cart", "order_page",
+                "order", "order_confirm", "success_page",
+                "change_language", "error", "");
 
-        userAllowedCommands = Arrays.asList("logout", "user_details", "main", "add_to_cart", "delete_from_cart", "cart",
-                "order_page", "order", "order_confirm", "success_page");
+        userAllowedCommands = Arrays.asList("logout", "user_details", "user_update", "user_update_page", "main",
+                "add_to_cart", "delete_from_cart", "cart",
+                "order_page", "order", "order_confirm",
+                "success_page", "change_language", "error", "user_delete");
 
-        guestAllowedCommands = Arrays.asList("welcome", "index", "login_page", "login", "signup_page", "signup",
-                "success_page", "");
-        userRedirectPage = "path.servlet.main";
-        guestRedirectPage = "path.servlet.login_page";
+        guestAllowedCommands = Arrays.asList("welcome", "index", "login_page",
+                "login", "signup_page", "signup",
+                "success_page", "change_language", "", "error");
+        errorPage = "path.servlet.error";
+
     }
 
 
@@ -46,30 +55,39 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
-        Role role = (Role) session.getAttribute("role");
-        if (Role.ADMIN.equals(role)) {
-            allowedCommands(chain, httpRequest, httpResponse, adminAllowedCommands, userRedirectPage);
-        } else if (Role.USER.equals(role)) {
-            allowedCommands(chain, httpRequest, httpResponse, userAllowedCommands, userRedirectPage);
+        String role = ((String) session.getAttribute("role"));
+        if (ADMIN.name().equals(role)) {
+            allowedCommands(chain, httpRequest, httpResponse, adminAllowedCommands, errorPage);
+        } else if (USER.name().equals(role)) {
+            allowedCommands(chain, httpRequest, httpResponse, userAllowedCommands, errorPage);
         } else {
-            if (!Role.GUEST.equals(role)) {
-                role = Role.GUEST;
-                session.setAttribute("role", role);
+            if (!GUEST.name().equals(role)) {
+                initDefault(session, role);
             }
-            allowedCommands(chain, httpRequest, httpResponse, guestAllowedCommands, guestRedirectPage);
+            allowedCommands(chain, httpRequest, httpResponse, guestAllowedCommands, errorPage);
         }
+    }
+
+    private void initDefault(HttpSession session, String role) {
+        role = GUEST.name();
+        session.setAttribute("role", role);
+        session.setAttribute("language", "en");
+        session.setAttribute("pageContextManager", new PageContextManager("en"));
+        session.setAttribute("messageManager", new MessageManager("en"));
     }
 
     private void allowedCommands(FilterChain chain, HttpServletRequest httpRequest, HttpServletResponse httpResponse, List<String> allowedCommands, String redirectPage) throws IOException, ServletException {
         List<String> ac = allowedCommands;
-
-        String action = httpRequest.getRequestURI().toLowerCase().replaceAll(".*periodicals/", "").replaceAll("[?].+", "");
-        boolean contains = ac.contains(action);
-        System.out.println(action);
-        System.out.println(contains);
-        if (ac.contains(httpRequest.getRequestURI().toLowerCase().replaceAll(".*periodicals/", "").replaceAll("[?].+", ""))) {
+//--------------DEBUG---------------------
+//        String action = UriConverter.uriToForFilter(httpRequest);
+//        boolean contains = ac.contains(action);
+//        System.out.println(action);
+//        System.out.println(contains);
+//----------------------------------------
+        if (ac.contains(UriConverter.uriToForFilter(httpRequest))) {
             chain.doFilter(httpRequest, httpResponse);
         } else {
+            httpRequest.getSession().setAttribute("currentPage", httpRequest.getRequestURI());
             RequestDispatcher dispatcher = httpRequest.getServletContext().getRequestDispatcher(ConfigurationManager.getProperty(redirectPage));
             dispatcher.forward(httpRequest, httpResponse);
         }

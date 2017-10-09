@@ -16,8 +16,8 @@ public interface StringConstants {
     String PERIODICAL_TITLE = "p_title";
     String PERIODICAL_FREQUENCY = "p_publication_frequency";
     String PERIODICAL_SUBSCRIPTION_PRICE = "p_subscription_price";
-    String PERIODICAL_RUS_DESCRIPTION = "p_ru_description";
-    String PERIODICAL_ENG_DESCRIPTION = "p_en_description";
+    String PERIODICAL_RU_DESCRIPTION = "p_ru_description";
+    String PERIODICAL_EN_DESCRIPTION = "p_en_description";
 
     String USER_ID = "u_id";
     String USER_LOGIN = "u_login";

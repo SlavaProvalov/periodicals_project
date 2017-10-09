@@ -2,7 +2,7 @@ package controller.commands.userCommands;
 
 import controller.commands.ActionCommand;
 import controller.resourceManager.ConfigurationManager;
-import controller.resourceManager.PageContextManager;
+import controller.utils.ErrorConstructor;
 import model.entity.Client;
 import model.entity.Periodical;
 import model.service.PeriodicalService;
@@ -31,40 +31,24 @@ public class UserDetails implements ActionCommand {
             int id = (int) session.getAttribute("userId");
             Optional<Client> client = userService.getClientById(id);
             List<Periodical> periodicals = periodicalService.getPeriodicalsByClientId(id);
-
             setAttributes(request, session, client.get(), periodicals);
-
-            page = Optional.of(ConfigurationManager.getProperty("path.page.userDetails"));
+            page = Optional.of(ConfigurationManager.getProperty("path.page.user_details"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: 09.10.2017 log
+            page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
+            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.main");
         }
         return page.get();
     }
 
     private void setAttributes(HttpServletRequest request, HttpSession session, Client client, List<Periodical> periodicals) {
-        request.setAttribute("logout", PageContextManager.getProperty("authorization.logout"));
-        request.setAttribute("main", PageContextManager.getProperty("main.menu"));
-        request.setAttribute("cart", PageContextManager.getProperty("main.cart"));
-        request.setAttribute("items", session.getAttribute("items"));
-        request.setAttribute("hi", PageContextManager.getProperty("main.hi"));
-        request.setAttribute("userLogin", session.getAttribute("userLogin"));
-        request.setAttribute("user_login", PageContextManager.getProperty("signUp.login"));
-        request.setAttribute("user_role", PageContextManager.getProperty("user.role"));
-        request.setAttribute("user_firstName", PageContextManager.getProperty("signUp.name"));
-        request.setAttribute("user_lastName", PageContextManager.getProperty("signUp.lastName"));
-        request.setAttribute("user_email", PageContextManager.getProperty("signUp.email"));
-        request.setAttribute("user_phoneNumber", PageContextManager.getProperty("user.phoneNumber"));
-        request.setAttribute("login", session.getAttribute("userLogin"));
-        request.setAttribute("role", session.getAttribute("role"));
-        request.setAttribute("firstName", client.getFirstName());
-        request.setAttribute("lastName", client.getLastName());
-        request.setAttribute("email", client.getEmail());
-        request.setAttribute("phoneNumber", client.getPhoneNumber());
-        request.setAttribute("caption", PageContextManager.getProperty("main.caption"));
-        request.setAttribute("title", PageContextManager.getProperty("periodical.title"));
-        request.setAttribute("frequency", PageContextManager.getProperty("periodical.frequency"));
-        request.setAttribute("price", PageContextManager.getProperty("periodical.price"));
-        request.setAttribute("description", PageContextManager.getProperty("periodical.description"));
+        session.setAttribute("firstName", client.getFirstName());
+        session.setAttribute("lastName", client.getLastName());
+        session.setAttribute("email", client.getEmail());
+        session.setAttribute("phoneNumber", client.getPhoneNumber());
+        request.setAttribute("signUpDate", client.getRegistrationDate());
         request.setAttribute("periodicalsList", periodicals);
+        session.setAttribute("currentPage", request.getRequestURI());
+
     }
 }

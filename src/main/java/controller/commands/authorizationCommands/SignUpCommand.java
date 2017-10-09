@@ -3,16 +3,19 @@ package controller.commands.authorizationCommands;
 import controller.commands.ActionCommand;
 import controller.resourceManager.ConfigurationManager;
 import controller.resourceManager.MessageManager;
+import controller.utils.ErrorConstructor;
 import exceptions.EmailAlreadyExistException;
 import exceptions.LoginAlreadyExistException;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.Optional;
 
 public class SignUpCommand implements ActionCommand {
-    private static UserService service ;
+    private static UserService service;
+    private MessageManager messageManager;
 
     public SignUpCommand() {
         service = UserService.getInstance();
@@ -21,6 +24,8 @@ public class SignUpCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request) {
         Optional<String> page = Optional.empty();
+        HttpSession session = request.getSession();
+        messageManager = (MessageManager) session.getAttribute("messageManager");
         try {
             String login = request.getParameter("login");
             String password = request.getParameter("password");
@@ -30,19 +35,20 @@ public class SignUpCommand implements ActionCommand {
             String phone = request.getParameter("phone");
             saveValuesInFields(request, login, password, email, firstName, lastName, phone);
             service.createNewUser(login, password, firstName, lastName, email, phone);
-            request.setAttribute("success", MessageManager.getProperty("message.success.signUp"));
-            request.setAttribute("redirect", MessageManager.getProperty("message.success.redirect"));
+            request.setAttribute("success", messageManager.getProperty("message.success.signUp"));
+            request.setAttribute("redirect", messageManager.getProperty("message.success.redirect"));
             request.setAttribute("redirectServlet", ConfigurationManager.getProperty("path.servlet.welcome"));
             page = Optional.of(ConfigurationManager.getProperty("path.page.success"));
         } catch (LoginAlreadyExistException e) {
-            request.setAttribute("errorLoginExist", MessageManager.getProperty("message.loginExistError"));
-            page = Optional.of(ConfigurationManager.getProperty("path.servlet.signUp_page"));
+            request.setAttribute("errorLogin", 1);
+            page = Optional.of(ConfigurationManager.getProperty("path.servlet.sign_up_page"));
         } catch (EmailAlreadyExistException e) {
-            request.setAttribute("errorEmailExist", MessageManager.getProperty("message.emailExistError"));
-            page = Optional.of(ConfigurationManager.getProperty("path.servlet.signUp_page"));
+            request.setAttribute("errorEmail", 1);
+            page = Optional.of(ConfigurationManager.getProperty("path.servlet.sign_up_page"));
         } catch (SQLException e) {
             //// TODO: 01.10.2017 log
-            e.printStackTrace();
+            page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
+            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.sign_up_page");
         }
         return page.get();
     }
@@ -54,6 +60,8 @@ public class SignUpCommand implements ActionCommand {
         request.setAttribute("firstName_value", firstName);
         request.setAttribute("lastName_value", lastName);
         request.setAttribute("phone_value", phone);
+        request.setAttribute("errorLogin", 0);
+        request.setAttribute("errorEmail", 0);
     }
 
 
