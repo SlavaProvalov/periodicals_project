@@ -14,6 +14,7 @@ import model.entity.builder.ClientBuilder;
 import model.entity.builder.UserBuilder;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -77,8 +78,20 @@ public class UserService {
             } else {
                 UserDAO userDAO = daoFactory.createUserDAO(connection);
                 ClientDAO clientDAO = daoFactory.createClientDAO(connection);
-                int id = userDAO.insert(UserBuilder.createSimpleUser(login, MD5.md5Hex(password)));
-                clientDAO.insert(ClientBuilder.createClient(id, firstName, lastName, email, phoneNumber));
+                UserBuilder userBuilder = new UserBuilder();
+                int id = userDAO.insert(userBuilder.createNewUser()
+                        .setLogin(login)
+                        .setPassword(MD5.md5Hex(password))
+                        .setRole("user").getUser());
+                ClientBuilder clientBuilder = new ClientBuilder();
+                clientDAO.insert(clientBuilder
+                        .createNewClient()
+                        .setId(id)
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setEmail(email)
+                        .setPhone(phoneNumber)
+                        .setSignUpDate(LocalDate.now()).getClient());
                 connection.commit();
                 return id;
             }
@@ -92,10 +105,17 @@ public class UserService {
         }
     }
 
-    public boolean updateUser(User user) throws SQLException {
+    public void updateUser(int id, String login, String password, String role, String firstName, String lastName, String email, boolean checkEmail, String phone) throws SQLException {
         try (DaoConnection connection = daoFactory.getConnection()) {
-            UserDAO dao = daoFactory.createUserDAO(connection);
-            return dao.update(user);
+            UserDAO userDAO = daoFactory.createUserDAO(connection);
+            ClientDAO clientDAO = daoFactory.createClientDAO(connection);
+            UserBuilder userBuilder = new UserBuilder();
+            ClientBuilder clientBuilder = new ClientBuilder();
+            if (checkEmail && isEmailExists(email) ) {
+                throw new EmailAlreadyExistException();
+            }
+            userDAO.update(userBuilder.createNewUser().setId(id).setLogin(login).setPassword(MD5.md5Hex(password)).setRole(role).getUser());
+            clientDAO.update(clientBuilder.createNewClient().setId(id).setFirstName(firstName).setLastName(lastName).setEmail(email).setPhone(phone).getClient());
         }
     }
 }
