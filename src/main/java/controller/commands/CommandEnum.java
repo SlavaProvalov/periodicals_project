@@ -21,6 +21,9 @@ public enum CommandEnum {
     WELCOME {{
         this.command = new WelcomeCommand();
     }},
+    CHANGE_LANGUAGE {{
+        this.command = new ChangeLanguageCommand();
+    }},
     SIGNUP {{
         this.command = new SignUpCommand();
     }},
@@ -30,11 +33,17 @@ public enum CommandEnum {
     USER_DETAILS {{
         this.command = new UserDetails();
     }},
+    USER_UPDATE {{
+        this.command = new UserUpdateCommand();
+    }},
+    USER_UPDATE_PAGE {{
+    this.command=new UserUpdatePageCommand();
+    }},
     NEW_PERIODICAL {{
         this.command = new NewPeriodicalCommand();
     }},
     NEW_PERIODICAL_PAGE {{
-        this.command=new NewPeriodicalPageCommand();
+        this.command = new NewPeriodicalPageCommand();
     }},
     MAIN {{
         this.command = new MainCommand();
@@ -56,9 +65,6 @@ public enum CommandEnum {
     }},
     ORDER_CONFIRM {{
         this.command = new OrderConfirmCommand();
-    }},
-    SUCCESS_PAGE {{
-        this.command = new SuccessPageCommand();
     }};
 
     ActionCommand command;
