@@ -3,6 +3,7 @@ package model.dao.jdbc;
 import config.StringConstants;
 import model.dao.UserDAO;
 import model.entity.User;
+import model.entity.builder.UserBuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -112,8 +113,13 @@ public class JdbcUserDao implements UserDAO, StringConstants {
     }
 
     private User createUser(ResultSet rs) throws SQLException {
-        return new User(rs.getInt(USER_ID), rs.getString(USER_LOGIN),
-                rs.getString(USER_PASS), rs.getString(USER_ROLE));
+        UserBuilder userBuilder = new UserBuilder();
+        return userBuilder.createNewUser()
+                .setId(rs.getInt(USER_ID))
+                .setLogin(rs.getString(USER_LOGIN))
+                .setPassword(rs.getString(USER_PASS))
+                .setRole(rs.getString(USER_ROLE))
+                .getUser();
     }
 
     @Override

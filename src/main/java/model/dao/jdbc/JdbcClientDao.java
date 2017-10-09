@@ -3,6 +3,7 @@ package model.dao.jdbc;
 import config.StringConstants;
 import model.dao.*;
 import model.entity.Client;
+import model.entity.builder.ClientBuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -111,10 +112,15 @@ public class JdbcClientDao implements ClientDAO, StringConstants {
     }
 
     private Client createClientFromRS(ResultSet rs) throws SQLException {
-        return new Client(rs.getInt(CLIENT_ID),
-                rs.getString(CLIENT_FIRST_NAME), rs.getString(CLIENT_LAST_NAME),
-                rs.getString(CLIENT_EMAIL), rs.getString(CLIENT_PHONE_NUMBER),
-                rs.getDate(CLIENT_REGISTRATION_DATE).toLocalDate());
+        ClientBuilder clientBuilder = new ClientBuilder();
+        return clientBuilder.createNewClient()
+                .setId(rs.getInt(CLIENT_ID))
+                .setFirstName(rs.getString(CLIENT_FIRST_NAME))
+                .setLastName(rs.getString(CLIENT_LAST_NAME))
+                .setEmail(rs.getString(CLIENT_EMAIL))
+                .setPhone(rs.getString(CLIENT_PHONE_NUMBER))
+                .setSignUpDate(rs.getDate(CLIENT_REGISTRATION_DATE).toLocalDate())
+                .getClient();
     }
 
     @Override
