@@ -9,20 +9,10 @@ public class User {
     private String hashPassword;
     private Role role;
 
-
-    public User(int id, String login, String hashPassword, String role) {
-        this.id = id;
-        this.login = login;
-        this.hashPassword = hashPassword;
-        this.role = "admin".equals(role) ? Role.ADMIN : Role.USER;
+    public User() {
 
     }
 
-    public User(String login, String hashPassword, Role role) {
-        this.login = login;
-        this.hashPassword = hashPassword;
-        this.role = role;
-    }
 
     public int getId() {
         return id;

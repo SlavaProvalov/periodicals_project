@@ -1,6 +1,5 @@
 package model.entity;
 
-import config.Localization;
 import config.StringConstants;
 
 import java.util.HashMap;
@@ -16,27 +15,7 @@ public class Periodical implements StringConstants {
     private long subscriptionPrice;
     private Map<String, String> descriptions = new HashMap<>();
 
-    public Periodical(int id, String title, int publicationFrequency, long subscriptionPrice, String descriptions, String language) {
-        this.id = id;
-        this.title = title;
-        this.publicationFrequency = publicationFrequency;
-        this.subscriptionPrice = subscriptionPrice;
-        this.descriptions.put(language, descriptions);
-    }
-
-    public Periodical(String title, int publicationFrequency, long subscriptionPrice, String ruDescription, String enDescription) {
-        this.title = title;
-        this.publicationFrequency = publicationFrequency;
-        this.subscriptionPrice = subscriptionPrice;
-        this.descriptions.put("p_ru_description", ruDescription);
-        this.descriptions.put("p_en_description", enDescription);
-    }
-
-    public Periodical(int id, String title, int publicationFrequency, long subscriptionPrice) {
-        this.id = id;
-        this.title = title;
-        this.publicationFrequency = publicationFrequency;
-        this.subscriptionPrice = subscriptionPrice;
+    public Periodical() {
     }
 
     public int getId() {
@@ -75,8 +54,20 @@ public class Periodical implements StringConstants {
         return descriptions;
     }
 
-    public String getDescription() {
-        return descriptions.get(Localization.getInstance().getDescriptionLanguage());
+    public String getRuDescription() {
+        return descriptions.get("p_ru_description");
+    }
+
+    public String getEnDescription() {
+        return descriptions.get("p_en_description");
+    }
+
+    public void setRuDescription(String ruDescription) {
+        this.descriptions.put("p_ru_description", ruDescription);
+    }
+
+    public void setEnDescription(String enDescription) {
+        this.descriptions.put("p_en_description", enDescription);
     }
 
     public void setDescriptions(Map<String, String> descriptions) {

@@ -1,9 +1,7 @@
 package model.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Provalov on 21.09.2017.
@@ -16,28 +14,9 @@ public class Order {
     private String city;
     private String postalCode;
     private String country;
-    List<Periodical> periodicals;
+    Collection<Periodical> periodicals;
 
-    public Order(int id, int clientId, LocalDateTime orderDate, String address, String city, String postalCode, String country) {
-        this.id = id;
-        this.clientId = clientId;
-        this.orderDate = orderDate;
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.periodicals = new ArrayList<>();
-    }
-
-    public Order(int clientId, LocalDateTime orderDate, String address, String city, String postalCode, String country, Collection<Periodical> periodicals) {
-        this.clientId = clientId;
-        this.orderDate = orderDate;
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.periodicals = new ArrayList<>();
-        this.periodicals.addAll(periodicals);
+    public Order() {
     }
 
     public int getId() {
@@ -96,11 +75,11 @@ public class Order {
         this.country = country;
     }
 
-    public List<Periodical> getPeriodicals() {
+    public Collection<Periodical> getPeriodicals() {
         return periodicals;
     }
 
-    public void setPeriodicals(List<Periodical> periodicals) {
+    public void setPeriodicals(Collection<Periodical> periodicals) {
         this.periodicals = periodicals;
     }
 
