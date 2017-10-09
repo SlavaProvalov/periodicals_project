@@ -1,38 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="currency" uri="/WEB-INF/custom.tld" %>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
+<fmt:setBundle basename="pageContext" var="lang" scope="session"/>
 <html>
 <head>
     <title>Main Page</title>
     <style>
-        <%@include file="../css/menuStyle.css"%>
         <%@include file="../css/tableStyle.css"%>
     </style>
 </head>
 <body>
-<jsp:include page="../include/header.jsp"></jsp:include>
+<jsp:include page="../include/header.jsp"/>
 
 <table class="table_cool">
-    <caption>${caption}</caption>
-    <tr>
-        <th>${title}</th>
-        <th>${frequency}</th>
-        <th>${price}</th>
-        <th>${description}</th>
-        <th></th>
-    </tr>
-    <c:forEach items="${periodicalsList}" var="Item" varStatus="status">
+    <caption><fmt:message key="welcome.caption" bundle="${lang}"/></caption>
+
+    <jsp:include page="../include/periodicalsHead.jsp" flush="true"/>
+
+    <c:forEach items="${periodicalsList}" var="item" varStatus="status">
         <tr valign="top">
-            <td>${Item.title}</td>
-            <td>${Item.publicationFrequency}</td>
-            <td>${Item.subscriptionPrice}</td>
-            <td>${Item.description}</td>
-            <td><a href="${pageContext.servletContext.contextPath}/add_to_cart?pItem_id=${Item.id}">${add}</a></td>
+            <td>${item.title}</td>
+            <td>${item.publicationFrequency}</td>
+            <c:if test="${sessionScope.language == 'en'}">
+                <td>${item.enDescription}</td>
+            </c:if>
+            <c:if test="${sessionScope.language == 'ru'}">
+                <td>${item.ruDescription}</td>
+            </c:if>
+            <td><currency:currency value="${item.subscriptionPrice}"
+                                   currType="${sessionScope.curr_type}"
+                                   rate="${sessionScope.curr_rate}"/>
+            </td>
+            <td><a href="${pageContext.servletContext.contextPath}/add_to_cart?pItem_id=${item.id}">
+                <fmt:message key="main.addToCart" bundle="${lang}"/></a></td>
         </tr>
     </c:forEach>
 
 </table>
-
-<p>My Name: ${userLogin}</p>
 </body>
 </html>
