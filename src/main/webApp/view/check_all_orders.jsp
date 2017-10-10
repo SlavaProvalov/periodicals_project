@@ -28,14 +28,14 @@
     </tr>
 
     <c:forEach items="${ordersList}" var="item" varStatus="status">
-        <fmt:parseDate value="${item.orderDate}" pattern="yyyy-MM-dd" var="parsedDate" type="date"/>
+        <fmt:parseDate value="${item.orderDate}" pattern="yyyy-MM-dd" var="date"/>
         <tr valign="top">
             <td>${item.clientId}</td>
             <td>${item.address}</td>
             <td>${item.city}</td>
             <td>${item.postalCode}</td>
             <td>${item.country}</td>
-            <td><fmt:formatDate value="${parsedDate}" type="date" pattern="yyyy-MM-dd"/></td>
+            <td><fmt:formatDate value="${date}" pattern="yyyy-MM-dd"/></td>
             <td>
                 <table class="inner_table">
                     <c:forEach items="${item.periodicals}" var="periodical" varStatus="status">
