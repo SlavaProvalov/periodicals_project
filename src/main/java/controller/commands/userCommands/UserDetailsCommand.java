@@ -7,6 +7,7 @@ import model.entity.Client;
 import model.entity.Periodical;
 import model.service.PeriodicalService;
 import model.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDetails implements ActionCommand {
+    private static final Logger log = Logger.getLogger(UserDetails.class);
     private static UserService userService;
     private static PeriodicalService periodicalService;
 
@@ -34,9 +36,9 @@ public class UserDetails implements ActionCommand {
             setAttributes(request, session, client.get(), periodicals);
             page = Optional.of(ConfigurationManager.getProperty("path.page.user_details"));
         } catch (SQLException e) {
-            e.printStackTrace(); // TODO: 09.10.2017 log
+            log.warn(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.main");
+            ErrorConstructor.fillErrorPage(request,e,"path.servlet.main");
         }
         return page.get();
     }
