@@ -11,4 +11,6 @@ import java.util.List;
 public interface PeriodicalDAO extends GenericDAO<Periodical> {
 
     List<Periodical> findByClientID(int id) throws SQLException;
+
+    List<Periodical> findByOrderId(int id) throws SQLException;
 }

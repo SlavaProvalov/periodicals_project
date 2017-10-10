@@ -40,6 +40,14 @@ public class PeriodicalService {
         }
     }
 
+    public List<Periodical> getPeriodicalsByOrderId(int id) throws SQLException {
+        try (DaoConnection connection = daoFactory.getConnection()) {
+            PeriodicalDAO dao = daoFactory.createPeriodicalDAO(connection);
+            return dao.findByOrderId(id);
+        }
+
+    }
+
     public int createNewPeriodical(Periodical periodical) throws SQLException {
         try (DaoConnection connection = daoFactory.getConnection()) {
             PeriodicalDAO dao = daoFactory.createPeriodicalDAO(connection);
