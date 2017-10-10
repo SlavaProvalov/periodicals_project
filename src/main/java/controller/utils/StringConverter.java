@@ -2,9 +2,9 @@ package controller.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class UriConverter {
+public class StringConverter {
 
-    private UriConverter() {
+    private StringConverter() {
     }
 
     public static String uriToForFilter(HttpServletRequest request) {
@@ -19,5 +19,9 @@ public class UriConverter {
     public static String uriToAction(HttpServletRequest request) {
         return request.getRequestURI().toLowerCase().
                 replaceAll(".*periodicals/", "").replaceAll("[?].+", "");
+    }
+
+    public static long stringPriceToLong(HttpServletRequest request) {
+        return Long.parseLong(request.getParameter("price").replaceAll("\\.", ""));
     }
 }
