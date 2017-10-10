@@ -17,19 +17,20 @@ public class JdbcPeriodicalDao implements PeriodicalDAO, StringConstants {
     private Connection connection;
 
     private String FIND_BY_ID = "SELECT * FROM `periodicals` WHERE `p_id`= ?;";
-
+    private String FIND_BY_ORDER_ID = "SELECT `p_id`, `p_title`,`p_publication_frequency`,`p_subscription_price`, `p_ru_description`,`p_en_description`" +
+            "FROM `orders` LEFT JOIN `order_details` ON `o_id`=`od_order_id`\n" +
+            "LEFT JOIN `periodicals` ON `p_id`=`od_periodical_id` WHERE `o_id` = ?;";
     private String FIND_BY_CLIENT_ID = "SELECT `p_id`,`p_title`,`p_publication_frequency`,`p_subscription_price`,`p_ru_description`, `p_en_description` " +
             "FROM `clients` LEFT JOIN `orders` ON `clients`.`c_id`= `orders`.`o_client_id` " +
             "LEFT JOIN `order_details` ON `orders`.`o_id` = `order_details`.`od_order_id` " +
             "LEFT JOIN `periodicals` ON `order_details`.`od_periodical_id` = `periodicals`.`p_id` " +
             "WHERE `c_id` = ?;";
-
     private String QUERY_FIND_ALL = "SELECT `p_id`,`p_title`, `p_publication_frequency`, `p_subscription_price`, `p_ru_description`, `p_en_description` FROM  `periodicals`;";
 
     private String UPDATE = "UPDATE `periodicals` " +
-            "SET `p_title`= ?,`p_publication_frequency`= ?,`p_subscription_price`= ?, `p_ru_description`= ?, `p_en_description`= ?  WHERE `p_id` = ?";
-    private String DELETE = "DELETE FROM `periodicals` WHERE `p_id`= ?";
-    private String INSERT_PERIODICAL = "INSERT INTO `periodicals` (`p_title`, `p_publication_frequency`, `p_subscription_price`,`p_ru_description`,`p_en_description`) VALUES (?,?,?,?,?)";
+            "SET `p_title`= ?,`p_publication_frequency`= ?,`p_subscription_price`= ?, `p_ru_description`= ?, `p_en_description`= ?  WHERE `p_id` = ?;";
+    private String DELETE = "DELETE FROM `periodicals` WHERE `p_id`= ?;";
+    private String INSERT_PERIODICAL = "INSERT INTO `periodicals` (`p_title`, `p_publication_frequency`, `p_subscription_price`,`p_ru_description`,`p_en_description`) VALUES (?,?,?,?,?);";
 
     public JdbcPeriodicalDao(Connection connection) {
         this.connection = connection;
@@ -51,14 +52,25 @@ public class JdbcPeriodicalDao implements PeriodicalDAO, StringConstants {
     @Override
     public List<Periodical> findByClientID(int id) throws SQLException {
         List<Periodical> result = new ArrayList<>();
-        try (PreparedStatement query = connection.prepareStatement(FIND_BY_CLIENT_ID)) {
+        findListById(id, result, FIND_BY_CLIENT_ID);
+        return result;
+    }
+
+    @Override
+    public List<Periodical> findByOrderId(int id) throws SQLException {
+        List<Periodical> result = new ArrayList<>();
+        findListById(id, result, FIND_BY_ORDER_ID);
+        return result;
+    }
+
+    private void findListById(int id, List<Periodical> result, String statement) throws SQLException {
+        try (PreparedStatement query = connection.prepareStatement(statement)) {
             query.setInt(1, id);
             ResultSet rs = query.executeQuery();
             while (rs.next()) {
                 result.add(createPeriodicalFromRS(rs));
             }
         }
-        return result;
     }
 
     @Override
