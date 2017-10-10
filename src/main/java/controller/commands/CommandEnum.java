@@ -3,6 +3,7 @@ package controller.commands;
 import controller.commands.adminCommands.NewPeriodicalCommand;
 import controller.commands.adminCommands.NewPeriodicalPageCommand;
 import controller.commands.authorizationCommands.*;
+import controller.commands.adminCommands.CheckAllOrdersCommand;
 import controller.commands.orderCommands.OrderCommand;
 import controller.commands.orderCommands.OrderConfirmCommand;
 import controller.commands.orderCommands.OrderPageCommand;
@@ -31,7 +32,7 @@ public enum CommandEnum {
         this.command = new SignUpPageCommand();
     }},
     USER_DETAILS {{
-        this.command = new UserDetails();
+        this.command = new UserDetailsCommand();
     }},
     USER_UPDATE {{
         this.command = new UserUpdateCommand();
@@ -52,7 +53,7 @@ public enum CommandEnum {
         this.command = new AddToCartCommand();
     }},
     DELETE_FROM_CART {{
-        this.command = new DeleteFromCart();
+        this.command = new DeleteFromCartCommand();
     }},
     CART {{
         this.command = new CartCommand();
@@ -65,6 +66,11 @@ public enum CommandEnum {
     }},
     ORDER_CONFIRM {{
         this.command = new OrderConfirmCommand();
+    }},
+    CHECK_ALL_ORDERS{{
+        this.command=new CheckAllOrdersCommand();
+    }},ERROR{{
+        this.command = new ErrorCommand();
     }};
 
     ActionCommand command;
