@@ -10,15 +10,15 @@
         <%@include file="../css/text.css"%>
     </style>
     <meta http-equiv="Refresh"
-          content="5;url=${redirectServlet}">
+          content="10;url=${redirectServlet}">
 </head>
 <body>
 <jsp:include page="../include/header.jsp" flush="true"/>
 <p><fmt:message key="message.errorTitle" bundle="${message}"/></p>
-<p><fmt:message key="message.errorCode" bundle="${message}"/><c:out value="${errorCode}"/></p>
-<p><fmt:message key="message.dbError" bundle="${message}"/> <c:out value="${errorState}"/></p>
+<p><fmt:message key="message.errorCode" bundle="${message}"/> <c:out value="${errorCode}"/></p>
+<p><fmt:message key="message.error.access_denied" bundle="${message}"/> <c:out value="${errorPath}"/></p>
+<p><fmt:message key="message.error.role" bundle="${message}"/> <c:out value="${errorRole}"/></p>
 <p><c:out value="${errorMessage}"/></p>
 <p><fmt:message key="message.error.redirect" bundle="${message}"/></p>
-
 </body>
 </html>
