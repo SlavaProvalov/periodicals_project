@@ -11,21 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by Provalov on 21.09.2017.
- */
 public class JdbcOrderDao implements OrderDAO, StringConstants {
 
     private Connection connection;
 
-    private final String FIND_ALL = "SELECT * FROM `orders`";
+    private final String FIND_ALL = "SELECT * FROM `orders` ORDER BY `o_order_date` DESC";
     private final String FIND_BY_ID = "SELECT * FROM `orders` WHERE `o_id`=?";
-    /* private final String FIND_BY_ID_WIT_DETAILS = "SELECT `o_id`, `o_client_id`,`o_order_date`,`o_order_address`,`o_order_city`,`o_order_postalCode`," +
-             " `o_order_country`,`p_id`,`p_title`,`p_publication_frequency`,`p_subscription_price` " +
-             "FROM `orders` " +
-             "JOIN `order_details` ON `orders`.`o_id` = `order_details`.`od_order_id` " +
-             "JOIN `periodicals` ON `order_details`.`od_periodical_id` = `periodicals`.`p_id` " +
-             "WHERE `orders`.`o_id` = ?";*/
+
     private final String FIND_BY_CLIENT_ID = "SELECT * FROM `orders` WHERE `o_client_id`= ?";
     private final String UPDATE = "UPDATE `orders` SET `o_client_id`= ?,`o_order_date`= ?,`o_order_address`= ?,`o_order_city`= ?, `o_order_postalCode`=?, `o_order_country`= ? WHERE `o_id`= ?";
     private final String DELETE = "DELETE FROM `orders` WHERE `o_id`= ?";
