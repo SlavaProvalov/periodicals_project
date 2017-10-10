@@ -4,10 +4,11 @@ import controller.ContextStorage;
 import controller.commands.ActionCommand;
 import controller.resourceManager.ConfigurationManager;
 import controller.resourceManager.MessageManager;
+import controller.utils.EntityBuilder;
 import controller.utils.ErrorConstructor;
 import model.entity.Periodical;
-import model.entity.builder.PeriodicalBuilder;
 import model.service.PeriodicalService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class NewPeriodicalCommand implements ActionCommand {
+    private static final Logger log = Logger.getLogger(NewPeriodicalCommand.class);
     private MessageManager messageManager;
     private static PeriodicalService service;
     private static ContextStorage contextStorage = ContextStorage.getInstance();
@@ -25,23 +27,11 @@ public class NewPeriodicalCommand implements ActionCommand {
 
     @Override
     public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.empty();
+        Optional<String> page;
         HttpSession session = request.getSession();
         messageManager = (MessageManager) session.getAttribute("messageManager");
         try {
-            String title = request.getParameter("title");
-            int frequency = Integer.parseInt(request.getParameter("frequency"));
-            long price = Long.parseLong(request.getParameter("price").replaceAll("\\.", ""));
-            String ruDescription = request.getParameter("ruDescription");
-            String enDescription = request.getParameter("enDescription");
-            Periodical periodical = new PeriodicalBuilder()
-                    .createNewPeriodical()
-                    .setTitle(title)
-                    .setPublicationFrequency(frequency)
-                    .setSubscriptionPrice(price)
-                    .setRuDescription(ruDescription)
-                    .setEnDescription(enDescription)
-                    .getPeriodical();
+            Periodical periodical = EntityBuilder.createPeriodicalFromRequest(request);
             service.createNewPeriodical(periodical);
             contextStorage.getPeriodicals().put(periodical.getId(), periodical);
             request.setAttribute("redirectServlet", ConfigurationManager.getProperty("path.servlet.main"));
@@ -49,10 +39,9 @@ public class NewPeriodicalCommand implements ActionCommand {
             request.setAttribute("redirect", messageManager.getProperty("message.success.redirect"));
             page = Optional.of(ConfigurationManager.getProperty("path.page.success"));
         } catch (SQLException e) {
-            //// TODO: 01.10.2017 log
+            log.error(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.newPeriodical");
-
+            ErrorConstructor.fillErrorPage(request, e, "path.servlet.newPeriodical");
         }
         return page.get();
     }

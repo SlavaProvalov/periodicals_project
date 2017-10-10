@@ -6,6 +6,7 @@ import controller.resourceManager.PageContextManager;
 import controller.utils.ErrorConstructor;
 import model.entity.Periodical;
 import model.service.PeriodicalService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MainCommand implements ActionCommand {
+    private static final Logger log = Logger.getLogger(MainCommand.class);
     private static PeriodicalService service;
     private static ContextStorage contextStorage;
     private PageContextManager pageContextManager;
@@ -25,7 +27,7 @@ public class MainCommand implements ActionCommand {
 
     @Override
     public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.empty();
+        Optional<String> page;
         HttpSession session = request.getSession();
         pageContextManager = (PageContextManager) session.getAttribute("pageContextManager");
         try {
@@ -41,8 +43,9 @@ public class MainCommand implements ActionCommand {
             }
             page = Optional.of(ConfigurationManager.getProperty("path.page.main"));
         } catch (SQLException e) {
-            // TODO: 02.10.2017 log
-            ErrorConstructor.fillErrorMessage(request, e, "path.servlet.logout");
+            log.error(e);
+            page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
+            ErrorConstructor.fillErrorPage(request, e, "path.servlet.logout");
         }
         return page.get();
     }

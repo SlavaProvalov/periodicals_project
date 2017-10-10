@@ -7,6 +7,7 @@ import controller.utils.ErrorConstructor;
 import exceptions.EmailAlreadyExistException;
 import exceptions.LoginAlreadyExistException;
 import model.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class SignUpCommand implements ActionCommand {
+    private static final Logger log = Logger.getLogger(SignUpCommand.class);
     private static UserService service;
     private MessageManager messageManager;
 
@@ -46,9 +48,9 @@ public class SignUpCommand implements ActionCommand {
             request.setAttribute("errorEmail", 1);
             page = Optional.of(ConfigurationManager.getProperty("path.servlet.sign_up_page"));
         } catch (SQLException e) {
-            //// TODO: 01.10.2017 log
+           log.error(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.sign_up_page");
+            ErrorConstructor.fillErrorPage(request,e,"path.servlet.sign_up_page");
         }
         return page.get();
     }

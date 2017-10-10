@@ -5,6 +5,7 @@ import controller.resourceManager.ConfigurationManager;
 import controller.utils.ErrorConstructor;
 import exceptions.EmailAlreadyExistException;
 import model.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserUpdateCommand implements ActionCommand {
+    private static final Logger log = Logger.getLogger(UserUpdateCommand.class);
     private static UserService userService;
 
 
@@ -21,7 +23,7 @@ public class UserUpdateCommand implements ActionCommand {
 
     @Override
     public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.empty();
+        Optional<String> page;
         HttpSession session = request.getSession();
         try {
             int id = (int) session.getAttribute("userId");
@@ -44,9 +46,10 @@ public class UserUpdateCommand implements ActionCommand {
         } catch (EmailAlreadyExistException e) {
             request.setAttribute("emailError", 1);
             page = Optional.of(ConfigurationManager.getProperty("path.servlet.user_update_page"));
-        } catch (SQLException e) {// // TODO: 08.10.2017 log
+        } catch (SQLException e) {
+            log.error(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorMessage(request, e, "path.servlet.user_update_page");
+            ErrorConstructor.fillErrorPage(request, e, "path.servlet.user_update_page");
         }
         return page.get();
     }

@@ -1,9 +1,9 @@
 package controller.commands.orderCommands;
 
-import controller.ContextStorage;
 import controller.commands.ActionCommand;
 import controller.resourceManager.ConfigurationManager;
 import controller.utils.ErrorConstructor;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,15 +11,11 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class OrderConfirmCommand implements ActionCommand {
-    private static ContextStorage contextStorage;
-
-    public OrderConfirmCommand() {
-        contextStorage = ContextStorage.getInstance();
-    }
+    private static final Logger log = Logger.getLogger(OrderConfirmCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.empty();
+        Optional<String> page;
         HttpSession session = request.getSession();
         try {
             setAttributes(request, session);
@@ -27,9 +23,9 @@ public class OrderConfirmCommand implements ActionCommand {
             session.removeAttribute("cart");
             page = Optional.of(ConfigurationManager.getProperty("path.page.order_confirm"));
         } catch (SQLException e) {
-            e.printStackTrace(); // TODO: 02.10.2017 log
+            log.error(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorMessage(request,e,"path.servlet.order_page");
+            ErrorConstructor.fillErrorPage(request, e, "path.servlet.order_page");
         }
         return page.get();
     }
