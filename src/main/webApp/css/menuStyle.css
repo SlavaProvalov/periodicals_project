@@ -1,37 +1,39 @@
 ul {
-    list-style: none; /*убираем маркеры списка*/
-    margin: 0; /*убираем отступы*/
-    padding-left: 0; /*убираем отступы*/
-    margin-top: 25px; /*делаем отступ сверху*/
-    background: #aca9ab; /*добавляем фон всему меню (заменив этот параметр, вы поменяете цвет всего меню)*/
-    height: 50px; /*задаем высоту*/
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    margin-top: 25px;
+    background: #3c3939;
+    height: 50px;
 }
 
 a {
-    text-decoration: none; /*убираем подчеркивание текста ссылок*/
-    background: #90c843; /*добавляем фон к пункту меню (заменив этот параметр, вы поменяете цвет всех пунктов меню)*/
-    color: #0d0a0c; /*меняем цвет ссылок*/
-    padding: 0px 15px; /*добавляем отступ*/
-    font-family: 'Open Sans', sans-serif; /*меняем шрифт*/
-    line-height: 50px; /*ровняем меню по вертикали*/
+    text-decoration: none;
+    background: #90c843;
+    color: #FFF;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14pt;
+    padding: 0 15px;
+    line-height: 50px;
     display: block;
-    border-right: 1px solid #0d0a0c; /*добавляем бордюр справа*/
-    -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+    border-right: 1px solid #0d0a0c; /
+    -moz-transition: all 0.3s 0.01s ease;
     -o-transition: all 0.3s 0.01s ease;
     -webkit-transition: all 0.3s 0.01s ease;
 }
 
 .change_language a {
-    line-height: 25px; /*ровняем меню по вертикали*/
-    padding: 0px 5px; /*добавляем отступ*/
+    line-height: 25px;
+    padding: 0 5px;
 }
 
 a:hover {
-    background: #d46c1e; /*добавляем эффект при наведении*/
+    background: #d46c1e;
 }
 
 li {
-    float: left; /*Размещаем список горизонтально для реализации меню*/
+    float: left;
 }
 
 
@@ -42,16 +44,17 @@ li {
     line-height: 50px;
     padding: 0px 15px;
     display: block;
+    color:  #FFF;
     border-right: 1px solid #0d0a0c;
     -moz-transition: all 0.3s 0.01s ease;
     -o-transition: all 0.3s 0.01s ease;
     -webkit-transition: all 0.3s 0.01s ease;
 }
 .hi b {
-    color: #0d0a0c;
+    color:  #FFF;
 }
 
-.hi, .newPeriodical, .user_details, .logout, .change_language {
+.hi, .newPeriodical, .user_details, .logout, .change_language,.check_all_orders {
     float: right;
 
 }
