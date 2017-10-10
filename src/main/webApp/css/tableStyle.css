@@ -1,4 +1,4 @@
-.table_cool {
+.table_cool, .table_orders {
     width: 100%;
     border-collapse: collapse;
     border-left: 3px solid #908a89;
@@ -7,7 +7,7 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-.table_cool caption {
+.table_cool caption, .table_orders caption {
     background: #908a89;
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
@@ -21,27 +21,32 @@
     margin: 0;
 }
 
-.table_cool td, .table_cool th {
+.table_cool td, .table_cool th, .table_orders td, .table_orders th {
     text-align: left;
     padding: 10px;
 }
 
-.table_cool th {
+.table_cool th, .table_orders th {
     text-align: left;
     font-size: 14px;
 }
 
-.table_cool tr:nth-child(2n) {
+.table_cool tr:nth-child(2n), .table_orders tr:nth-child(2n) {
     background: #E5E5E5;
 }
-.table_cool td:nth-child(2n){
+
+.inner_table tr:nth-child(1n), .inner_table tr:nth-child(2n) {
+    background: rgba(255, 255, 255, 0);
+
+}
+
+.table_cool td:nth-child(2n) {
     text-align: center;
 }
 
 .table_cool td:last-of-type a {
     text-align: center;
 }
-
 
 .table_cool a {
     display: inline-block;

@@ -17,11 +17,11 @@
 
     <b><fmt:message key="periodical.title" bundle="${lang}"/>: </b>
     <input type="text" class="textbox" name="title" minlength="1" maxlength="32" pattern="<fmt:message key="pattern.title" bundle="${pattern}"/>"
-           placeholder="some magazine" required/>
+            required/>
     <br/>
     <b><fmt:message key="periodical.frequency" bundle="${lang}"/>: </b>
     <input type="number" class="textbox" name="frequency"
-           placeholder="days" required/>
+          required/>
     <br/>
 
     <b><fmt:message key="periodical.price" bundle="${lang}"/>: </b>

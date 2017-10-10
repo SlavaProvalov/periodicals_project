@@ -15,7 +15,7 @@
 <body>
 <jsp:include page="../include/header.jsp" flush="true"/>
 <br/>
-<b><fmt:message key="order.thankYou" bundle="${lang}"/></b>
+<p><b><fmt:message key="order.thankYou" bundle="${lang}"/></b></p>
 <br/>
 <table class="table_cool">
     <caption><fmt:message key="cart.caption" bundle="${lang}"/></caption>
