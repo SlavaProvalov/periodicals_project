@@ -31,7 +31,13 @@ public class OrderService {
     public List<Order> getAllOrders() throws SQLException {
         try (DaoConnection connection = daoFactory.getConnection()) {
             OrderDAO orderDAO = daoFactory.createOrderDAO(connection);
-            return orderDAO.findAll();
+            List<Order> orders = orderDAO.findAll();
+            PeriodicalService service = PeriodicalService.getInstance();
+            for (Order order : orders) {
+                List<Periodical> oPeriodicals = service.getPeriodicalsByOrderId(order.getId());
+                order.setPeriodicals(oPeriodicals);
+            }
+            return orders;
         }
     }
 
