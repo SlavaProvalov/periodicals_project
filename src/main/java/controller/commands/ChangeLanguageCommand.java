@@ -8,8 +8,8 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class ChangeLanguageCommand implements ActionCommand {
-    PageContextManager pageContextManager;
-    MessageManager messageManager;
+    private PageContextManager pageContextManager;
+    private MessageManager messageManager;
 
     public ChangeLanguageCommand() {
     }

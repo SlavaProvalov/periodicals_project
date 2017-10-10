@@ -1,7 +1,7 @@
 package controller.commands;
 
 import controller.resourceManager.MessageManager;
-import controller.utils.UriConverter;
+import controller.utils.StringConverter;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +10,7 @@ public class ActionFactory {
 
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand current = new EmptyCommand();
-        String action = UriConverter.uriToAction(request);
+        String action = StringConverter.uriToAction(request);
         if (action == null || action.isEmpty()) {
             return current;
         }

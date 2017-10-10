@@ -105,17 +105,33 @@ public class UserService {
         }
     }
 
-    public void updateUser(int id, String login, String password, String role, String firstName, String lastName, String email, boolean checkEmail, String phone) throws SQLException {
+    public void updateUser(int id, String login, String password, String role, String firstName, String lastName,
+                           String email, boolean checkEmail, String phone) throws SQLException {
         try (DaoConnection connection = daoFactory.getConnection()) {
             UserDAO userDAO = daoFactory.createUserDAO(connection);
             ClientDAO clientDAO = daoFactory.createClientDAO(connection);
             UserBuilder userBuilder = new UserBuilder();
             ClientBuilder clientBuilder = new ClientBuilder();
-            if (checkEmail && isEmailExists(email) ) {
+            connection.begin();
+            if (checkEmail && isEmailExists(email)) {
                 throw new EmailAlreadyExistException();
             }
-            userDAO.update(userBuilder.createNewUser().setId(id).setLogin(login).setPassword(MD5.md5Hex(password)).setRole(role).getUser());
-            clientDAO.update(clientBuilder.createNewClient().setId(id).setFirstName(firstName).setLastName(lastName).setEmail(email).setPhone(phone).getClient());
+            userDAO.update(userBuilder
+                    .createNewUser()
+                    .setId(id)
+                    .setLogin(login)
+                    .setPassword(MD5.md5Hex(password))
+                    .setRole(role)
+                    .getUser());
+            clientDAO.update(clientBuilder
+                    .createNewClient()
+                    .setId(id)
+                    .setFirstName(firstName)
+                    .setLastName(lastName)
+                    .setEmail(email)
+                    .setPhone(phone)
+                    .getClient());
+            connection.commit();
         }
     }
 }

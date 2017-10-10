@@ -15,12 +15,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDetails implements ActionCommand {
-    private static final Logger log = Logger.getLogger(UserDetails.class);
+public class UserDetailsCommand implements ActionCommand {
+    private static final Logger log = Logger.getLogger(UserDetailsCommand.class);
     private static UserService userService;
     private static PeriodicalService periodicalService;
 
-    public UserDetails() {
+    public UserDetailsCommand() {
         userService = UserService.getInstance();
         periodicalService = PeriodicalService.getInstance();
     }

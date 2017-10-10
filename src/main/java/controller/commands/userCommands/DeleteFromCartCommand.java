@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 import java.util.Set;
 
-public class DeleteFromCart implements ActionCommand {
+public class DeleteFromCartCommand implements ActionCommand {
     private static ContextStorage contextStorage;
 
-    public DeleteFromCart() {
+    public DeleteFromCartCommand() {
         contextStorage = ContextStorage.getInstance();
     }
 

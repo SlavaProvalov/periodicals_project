@@ -4,6 +4,7 @@ import controller.commands.ActionCommand;
 import controller.commands.ActionFactory;
 import controller.resourceManager.ConfigurationManager;
 import controller.resourceManager.MessageManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/")
 public class Controller extends HttpServlet {
+    private static final Logger log = Logger.getLogger(Controller.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,6 +38,7 @@ public class Controller extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page.get());
             dispatcher.forward(request, response);
         } else {
+            log.warn("attempt of access to nonexistent page: "+ page);
             page = Optional.of(ConfigurationManager.getProperty("path.page.index"));
             request.getSession().setAttribute("nullPage", ((MessageManager) request.getSession()
                     .getAttribute("messageManager")).getProperty("message.nullPage"));
