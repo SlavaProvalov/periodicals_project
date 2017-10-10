@@ -64,6 +64,13 @@
                 </a>
             </c:if>
         </li>
+        <li class="check_all_orders">
+            <c:if test="${admin}">
+                <a href="${pageContext.servletContext.contextPath}/check_all_orders">
+                    <fmt:message key="header.check_all_orders" bundle="${lang}"/>
+                </a>
+            </c:if>
+        </li>
         <li class="newPeriodical">
             <c:if test="${admin}">
                 <a href="${pageContext.servletContext.contextPath}/new_periodical_page">
