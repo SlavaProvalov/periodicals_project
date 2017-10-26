@@ -39,7 +39,8 @@
         </tr>
     </c:forEach>
     <tr>
-        <td colspan="3"><b><fmt:message key="cart.summary" bundle="${lang}"/></b></td>
+        <td colspan="2"><b><fmt:message key="cart.summary" bundle="${lang}"/></b></td>
+        <td><fmt:message key="order.discount" bundle="${lang}"/> ${sessionScope.discount}%</td>
         <td><b><currency:currency value="${sessionScope.total_cost}" currType="${sessionScope.curr_type}"
                                   rate="${sessionScope.curr_rate}"/></b></td>
     </tr>

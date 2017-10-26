@@ -15,19 +15,27 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class SignUpCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(SignUpCommand.class);
+    private static SignUpCommand instance;
+    private static Logger log;
     private static UserService service;
-    private MessageManager messageManager;
 
-    public SignUpCommand() {
+    private SignUpCommand() {
         service = UserService.getInstance();
+        log = Logger.getLogger(SignUpCommand.class);
+    }
+
+    public static SignUpCommand getInstance() {
+        if (instance == null) {
+            instance = new SignUpCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
-        Optional<String> page = Optional.empty();
+    public Optional<String> execute(HttpServletRequest request) {
+        Optional<String> page;
         HttpSession session = request.getSession();
-        messageManager = (MessageManager) session.getAttribute("messageManager");
+        MessageManager messageManager = (MessageManager) session.getAttribute("messageManager");
         try {
             String login = request.getParameter("login");
             String password = request.getParameter("password");
@@ -48,11 +56,11 @@ public class SignUpCommand implements ActionCommand {
             request.setAttribute("errorEmail", 1);
             page = Optional.of(ConfigurationManager.getProperty("path.servlet.sign_up_page"));
         } catch (SQLException e) {
-           log.error(e);
+            log.error(e);
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
-            ErrorConstructor.fillErrorPage(request,e,"path.servlet.sign_up_page");
+            ErrorConstructor.fillErrorPage(request, e, "path.servlet.sign_up_page");
         }
-        return page.get();
+        return page;
     }
 
     private void saveValuesInFields(HttpServletRequest request, String login, String password, String email, String firstName, String lastName, String phone) {

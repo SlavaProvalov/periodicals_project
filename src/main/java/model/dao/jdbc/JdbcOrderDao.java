@@ -19,9 +19,9 @@ public class JdbcOrderDao implements OrderDAO, StringConstants {
     private final String FIND_BY_ID = "SELECT * FROM `orders` WHERE `o_id`=?";
 
     private final String FIND_BY_CLIENT_ID = "SELECT * FROM `orders` WHERE `o_client_id`= ?";
-    private final String UPDATE = "UPDATE `orders` SET `o_client_id`= ?,`o_order_date`= ?,`o_order_address`= ?,`o_order_city`= ?, `o_order_postalCode`=?, `o_order_country`= ? WHERE `o_id`= ?";
+    private final String UPDATE = "UPDATE `orders` SET `o_client_id`= ?,`o_order_date`= ?,`o_order_end_date`=?,`o_order_address`= ?,`o_order_city`= ?, `o_order_postalCode`=?, `o_order_country`= ? WHERE `o_id`= ?";
     private final String DELETE = "DELETE FROM `orders` WHERE `o_id`= ?";
-    private final String INSERT = "INSERT INTO `orders` (`o_client_id`,`o_order_date`,`o_order_address`,`o_order_city`,`o_order_postalCode`,`o_order_country`) VALUES (?,?,?,?,?,?)";
+    private final String INSERT = "INSERT INTO `orders` (`o_client_id`,`o_order_date`,`o_order_end_date`,`o_order_address`,`o_order_city`,`o_order_postalCode`,`o_order_country`) VALUES (?,?,?,?,?,?,?)";
     private final String INSERT_ORDER_DETAILS = "INSERT INTO `order_details` (`od_order_id`,`od_periodical_id`) VALUES (?,?)";
 
     public JdbcOrderDao(Connection connection) {
@@ -75,7 +75,7 @@ public class JdbcOrderDao implements OrderDAO, StringConstants {
         boolean result = false;
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
             sendOrder(order, query);
-            query.setInt(7, order.getId());
+            query.setInt(8, order.getId());
             if (query.executeUpdate() != 0) {
                 result = true;
             }
@@ -121,10 +121,11 @@ public class JdbcOrderDao implements OrderDAO, StringConstants {
     private void sendOrder(Order order, PreparedStatement query) throws SQLException {
         query.setInt(1, order.getClientId());
         query.setTimestamp(2, Timestamp.valueOf(order.getOrderDate()));
-        query.setString(3, order.getAddress());
-        query.setString(4, order.getCity());
-        query.setString(5, order.getPostalCode());
-        query.setString(6, order.getCountry());
+        query.setTimestamp(3,Timestamp.valueOf(order.getOrderEndDate()));
+        query.setString(4, order.getAddress());
+        query.setString(5, order.getCity());
+        query.setString(6, order.getPostalCode());
+        query.setString(7, order.getCountry());
     }
 
 
@@ -133,6 +134,7 @@ public class JdbcOrderDao implements OrderDAO, StringConstants {
         return orderBuilder.createNewOrder().setId(rs.getInt(ORDER_ID))
                 .setClientId(rs.getInt(ORDER_CLIENT_ID))
                 .setOrderDate(rs.getTimestamp(ORDER_DATE).toLocalDateTime())
+                .setOrderEndDate(rs.getTimestamp(ORDER_END_DATE).toLocalDateTime())
                 .setAddress(rs.getString(ORDER_ADDRESS))
                 .setCity(rs.getString(ORDER_CITY))
                 .setPostalCode(rs.getString(ORDER_POSTAL_CODE))

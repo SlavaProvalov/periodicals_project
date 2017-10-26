@@ -8,17 +8,23 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class ChangeLanguageCommand implements ActionCommand {
-    private PageContextManager pageContextManager;
-    private MessageManager messageManager;
+    private static ChangeLanguageCommand instance;
 
-    public ChangeLanguageCommand() {
+    private ChangeLanguageCommand() {
+    }
+
+    public static ChangeLanguageCommand getInstance() {
+        if (instance == null) {
+            instance = new ChangeLanguageCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        pageContextManager = (PageContextManager) session.getAttribute("pageContextManager");
-        messageManager = (MessageManager) session.getAttribute("messageManager");
+        PageContextManager pageContextManager = (PageContextManager) session.getAttribute("pageContextManager");
+        MessageManager messageManager = (MessageManager) session.getAttribute("messageManager");
         String language = request.getParameter("language");
         pageContextManager.changeLocale(language);
         messageManager.changeLocale(language);
@@ -28,6 +34,6 @@ public class ChangeLanguageCommand implements ActionCommand {
         session.setAttribute("curr_type", pageContextManager.getProperty("welcome.curr_type"));
         request.getSession().setAttribute("curr_rate", pageContextManager.getProperty("welcome.curr_rate"));
         Optional<String> page = Optional.of(request.getSession().getAttribute("currentPage").toString());
-        return page.get();
+        return page;
     }
 }

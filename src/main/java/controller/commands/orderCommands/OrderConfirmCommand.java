@@ -11,10 +11,22 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class OrderConfirmCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(OrderConfirmCommand.class);
+    private static OrderConfirmCommand instance;
+    private static Logger log;
+
+    private OrderConfirmCommand() {
+        log = Logger.getLogger(OrderConfirmCommand.class);
+    }
+
+    public static OrderConfirmCommand getInstance() {
+        if (instance == null) {
+            instance = new OrderConfirmCommand();
+        }
+        return instance;
+    }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession();
         try {
@@ -27,7 +39,7 @@ public class OrderConfirmCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.order_page");
         }
-        return page.get();
+        return page;
     }
 
     private void setAttributes(HttpServletRequest request, HttpSession session) throws SQLException {

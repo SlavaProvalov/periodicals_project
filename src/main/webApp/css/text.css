@@ -7,7 +7,7 @@ p {
 .button, .user_delete {
     text-align: center;
     height: 50px;
-    width: 150px;
+    width: 250px;
     border-radius: 3px;
     border: rgba(0, 0, 0, .3) 0px solid;
     box-sizing: border-box;

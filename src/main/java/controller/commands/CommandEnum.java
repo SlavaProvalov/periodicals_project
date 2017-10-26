@@ -4,73 +4,75 @@ import controller.commands.adminCommands.NewPeriodicalCommand;
 import controller.commands.adminCommands.NewPeriodicalPageCommand;
 import controller.commands.authorizationCommands.*;
 import controller.commands.adminCommands.CheckAllOrdersCommand;
-import controller.commands.orderCommands.OrderCommand;
-import controller.commands.orderCommands.OrderConfirmCommand;
-import controller.commands.orderCommands.OrderPageCommand;
+import controller.commands.orderCommands.*;
 import controller.commands.userCommands.*;
 
 public enum CommandEnum {
     LOGIN {{
-        this.command = new LoginCommand();
+        this.command = LoginCommand.getInstance();
     }},
     LOGIN_PAGE {{
-        this.command = new LoginPageCommand();
+        this.command = LoginPageCommand.getInstance();
     }},
     LOGOUT {{
-        this.command = new LogoutCommand();
+        this.command = LogoutCommand.getInstance();
     }},
     WELCOME {{
-        this.command = new WelcomeCommand();
+        this.command = WelcomeCommand.getInstance();
     }},
     CHANGE_LANGUAGE {{
-        this.command = new ChangeLanguageCommand();
+        this.command = ChangeLanguageCommand.getInstance();
     }},
     SIGNUP {{
-        this.command = new SignUpCommand();
+        this.command = SignUpCommand.getInstance();
     }},
     SIGNUP_PAGE {{
-        this.command = new SignUpPageCommand();
+        this.command = SignUpPageCommand.getInstance();
     }},
     USER_DETAILS {{
-        this.command = new UserDetailsCommand();
+        this.command = UserDetailsCommand.getInstance();
     }},
     USER_UPDATE {{
-        this.command = new UserUpdateCommand();
+        this.command = UserUpdateCommand.getInstance();
     }},
     USER_UPDATE_PAGE {{
-    this.command=new UserUpdatePageCommand();
+        this.command = UserUpdatePageCommand.getInstance();
     }},
     NEW_PERIODICAL {{
-        this.command = new NewPeriodicalCommand();
+        this.command = NewPeriodicalCommand.getInstance();
     }},
     NEW_PERIODICAL_PAGE {{
-        this.command = new NewPeriodicalPageCommand();
+        this.command = NewPeriodicalPageCommand.getInstance();
     }},
     MAIN {{
-        this.command = new MainCommand();
+        this.command = MainCommand.getInstance();
     }},
     ADD_TO_CART {{
-        this.command = new AddToCartCommand();
+        this.command = AddToCartCommand.getInstance();
     }},
     DELETE_FROM_CART {{
-        this.command = new DeleteFromCartCommand();
+        this.command = DeleteFromCartCommand.getInstance();
     }},
     CART {{
-        this.command = new CartCommand();
+        this.command = CartCommand.getInstance();
     }},
     ORDER_PAGE {{
-        this.command = new OrderPageCommand();
+        this.command = OrderPageCommand.getInstance();
     }},
     ORDER {{
-        this.command = new OrderCommand();
+        this.command = OrderCommand.getInstance();
     }},
     ORDER_CONFIRM {{
-        this.command = new OrderConfirmCommand();
+        this.command = OrderConfirmCommand.getInstance();
     }},
-    CHECK_ALL_ORDERS{{
-        this.command=new CheckAllOrdersCommand();
-    }},ERROR{{
-        this.command = new ErrorCommand();
+    CHECK_ALL_ORDERS {{
+        this.command = CheckAllOrdersCommand.getInstance();
+    }},
+    ERROR {{
+        this.command = ErrorCommand.getInstance();
+    }},
+    EMPTY {{
+        this.command = EmptyCommand.getInstance();
     }};
 
     ActionCommand command;

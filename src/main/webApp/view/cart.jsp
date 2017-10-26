@@ -39,12 +39,12 @@
             </td>
         </tr>
     </c:forEach>
-    <tr>
-        <td colspan="3"><b><fmt:message key="cart.summary" bundle="${lang}"/></b></td>
-        <td><b><currency:currency value="${sessionScope.total_cost}" currType="${sessionScope.curr_type}"
-                                  rate="${sessionScope.curr_rate}"/></b></td>
-        <td></td>
-    </tr>
+    <%--<tr>--%>
+        <%--<td colspan="3"><b><fmt:message key="cart.summary" bundle="${lang}"/></b></td>--%>
+        <%--<td><b><currency:currency value="${sessionScope.total_cost}" currType="${sessionScope.curr_type}"--%>
+                                  <%--rate="${sessionScope.curr_rate}"/></b></td>--%>
+        <%--<td></td>--%>
+    <%--</tr>--%>
 </table>
 <a class="checkout" href="${pageContext.servletContext.contextPath}/order_page">
     <fmt:message key="cart.checkout" bundle="${lang}"/></a>

@@ -7,6 +7,7 @@ public interface StringConstants {
     String ORDER_ID = "o_id";
     String ORDER_CLIENT_ID = "o_client_id";
     String ORDER_DATE = "o_order_Date";
+    String ORDER_END_DATE="o_order_end_date";
     String ORDER_ADDRESS = "o_order_address";
     String ORDER_CITY = "o_order_city";
     String ORDER_POSTAL_CODE = "o_order_postalCode";

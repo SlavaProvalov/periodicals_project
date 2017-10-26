@@ -13,16 +13,25 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserUpdateCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(UserUpdateCommand.class);
+    private static UserUpdateCommand instance;
+    private static Logger log;
     private static UserService userService;
 
 
-    public UserUpdateCommand() {
+    private UserUpdateCommand() {
         userService = UserService.getInstance();
+        log = Logger.getLogger(UserUpdateCommand.class);
+    }
+
+    public static UserUpdateCommand getInstance() {
+        if (instance == null) {
+            instance = new UserUpdateCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession();
         try {
@@ -51,7 +60,7 @@ public class UserUpdateCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.user_update_page");
         }
-        return page.get();
+        return page;
     }
 
     private void saveValuesInFields(HttpServletRequest request, String email, String firstName, String lastName, String phone) {

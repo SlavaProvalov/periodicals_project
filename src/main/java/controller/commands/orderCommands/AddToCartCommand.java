@@ -1,4 +1,4 @@
-package controller.commands.userCommands;
+package controller.commands.orderCommands;
 
 import controller.ContextStorage;
 import controller.commands.ActionCommand;
@@ -12,14 +12,22 @@ import java.util.Optional;
 import java.util.Set;
 
 public class AddToCartCommand implements ActionCommand {
+    private static AddToCartCommand instance;
     private static ContextStorage contextStorage;
 
-    public AddToCartCommand() {
+    private AddToCartCommand() {
         contextStorage = ContextStorage.getInstance();
     }
 
+    public static AddToCartCommand getInstance() {
+        if (instance == null) {
+            instance = new AddToCartCommand();
+        }
+        return instance;
+    }
+
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         int periodicalId = Integer.parseInt(request.getParameter("pItem_id"));
         List<Periodical> userPeriodicals = (List<Periodical>) session.getAttribute("userPeriodicals");
@@ -30,7 +38,7 @@ public class AddToCartCommand implements ActionCommand {
             session.setAttribute("cart", cart);
         }
         Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.servlet.main"));
-        return page.get();
+        return page;
     }
 
 

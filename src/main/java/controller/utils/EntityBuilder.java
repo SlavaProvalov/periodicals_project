@@ -34,14 +34,17 @@ public class EntityBuilder {
         String postalCode = request.getParameter("postalCode");
         String city = request.getParameter("city");
         String country = request.getParameter("country");
+        int months = Integer.parseInt(request.getParameter("months"));
         session.setAttribute("address_value", address);
         session.setAttribute("postalCode_value", postalCode);
         session.setAttribute("city_value", city);
         session.setAttribute("country_value", country);
+        session.setAttribute("months_value",months);
         OrderBuilder builder = new OrderBuilder();
         Order order = builder.createNewOrder()
                 .setClientId(id)
                 .setOrderDate(LocalDateTime.now())
+                .setOrderEndDate(LocalDateTime.now().plusMonths(months))
                 .setAddress(address)
                 .setCity(city)
                 .setPostalCode(postalCode)

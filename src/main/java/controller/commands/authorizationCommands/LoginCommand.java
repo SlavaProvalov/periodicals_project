@@ -16,18 +16,27 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class LoginCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(LoginCommand.class);
+    private static LoginCommand instance;
+    private static Logger log = Logger.getLogger(LoginCommand.class);
     private static final String PARAM_NAME_LOGIN = "login";
     private static final String PARAM_NAME_PASSWORD = "password";
     private static UserService userService;
 
 
-    public LoginCommand() {
+    private LoginCommand() {
         userService = UserService.getInstance();
+        log = Logger.getLogger(LoginCommand.class);
+    }
+
+    public static LoginCommand getInstance() {
+        if (instance == null) {
+            instance = new LoginCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession(true);
         try {
@@ -53,7 +62,7 @@ public class LoginCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.login_page");
         }
-        return page.get();
+        return page;
     }
 
     private void saveValuesInFields(HttpServletRequest request, String login, String password) {

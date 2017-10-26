@@ -11,11 +11,20 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class LogoutCommand implements ActionCommand {
-    public LogoutCommand() {
+    private static LogoutCommand instance;
+
+    private LogoutCommand() {
+    }
+
+    public static LogoutCommand getInstance() {
+        if (instance == null) {
+            instance = new LogoutCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         MessageManager messageManager = (MessageManager) session.getAttribute("messageManager");
         PageContextManager pageContextManager = (PageContextManager) session.getAttribute("pageContextManager");
@@ -28,6 +37,6 @@ public class LogoutCommand implements ActionCommand {
         session.setAttribute("language", language);
 
         Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.servlet.welcome"));
-        return page.get();
+        return page;
     }
 }

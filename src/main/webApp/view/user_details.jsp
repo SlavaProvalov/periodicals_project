@@ -31,27 +31,29 @@
     <fmt:message key="user.update" bundle="${lang}"/>
 </a>
 <br/>
-<table class="table_cool">
-    <caption><fmt:message key="user.caption" bundle="${lang}"/></caption>
+<c:if test="${listSize > 0}">
+    <table class="table_cool">
+        <caption><fmt:message key="user.caption" bundle="${lang}"/></caption>
 
-    <jsp:include page="../include/periodicalsHead.jsp" flush="true"/>
+        <jsp:include page="../include/periodicalsHead.jsp" flush="true"/>
 
-    <c:forEach items="${periodicalsList}" var="item" varStatus="status">
-        <tr valign="top">
-            <td>${item.title}</td>
-            <td>${item.publicationFrequency}</td>
-            <c:if test="${sessionScope.language == 'en'}">
-                <td>${item.enDescription}</td>
-            </c:if>
-            <c:if test="${sessionScope.language == 'ru'}">
-                <td>${item.ruDescription}</td>
-            </c:if>
-            <td><currency:currency value="${item.subscriptionPrice}"
-                                   currType="${sessionScope.curr_type}"
-                                   rate="${sessionScope.curr_rate}"/>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
+        <c:forEach items="${periodicalsList}" var="item" varStatus="status">
+            <tr valign="top">
+                <td>${item.title}</td>
+                <td>${item.publicationFrequency}</td>
+                <c:if test="${sessionScope.language == 'en'}">
+                    <td>${item.enDescription}</td>
+                </c:if>
+                <c:if test="${sessionScope.language == 'ru'}">
+                    <td>${item.ruDescription}</td>
+                </c:if>
+                <td><currency:currency value="${item.subscriptionPrice}"
+                                       currType="${sessionScope.curr_type}"
+                                       rate="${sessionScope.curr_rate}"/>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 </body>
 </html>

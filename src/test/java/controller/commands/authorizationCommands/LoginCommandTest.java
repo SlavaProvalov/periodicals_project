@@ -7,13 +7,14 @@ import org.mockito.Mockito;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class LoginCommandTest extends Mockito {
 
-    LoginCommand command = new LoginCommand();
+    LoginCommand command = LoginCommand.getInstance();
 
     private HttpServletRequest getHttpServletRequest() {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -27,8 +28,7 @@ public class LoginCommandTest extends Mockito {
         HttpServletRequest request = getHttpServletRequest();
         when(request.getParameter("login")).thenReturn("prov");
         when(request.getParameter("password")).thenReturn("7532159");
-
-        assertEquals(ConfigurationManager.getProperty("path.servlet.main"), command.execute(request));
+        assertEquals(Optional.of(ConfigurationManager.getProperty("path.servlet.main")), command.execute(request));
     }
 
 
@@ -37,15 +37,15 @@ public class LoginCommandTest extends Mockito {
         HttpServletRequest request = getHttpServletRequest();
         when(request.getParameter("login")).thenReturn("qwerty_123");
         when(request.getParameter("password")).thenReturn("1234567");
-        assertEquals(ConfigurationManager.getProperty("path.servlet.login_page"), command.execute(request));
+        assertEquals(Optional.of(ConfigurationManager.getProperty("path.servlet.login_page")), command.execute(request));
     }
 
     @Test
     public void execute_withWrongPassword() throws Exception {
         HttpServletRequest request = getHttpServletRequest();
         when(request.getParameter("login")).thenReturn("prov");
-        when(request.getParameter("password")).thenReturn("1234567");
-        assertEquals(ConfigurationManager.getProperty("path.servlet.login_page"), command.execute(request));
+        when(request.getParameter("password")).thenReturn("0000000");
+        assertEquals(Optional.of(ConfigurationManager.getProperty("path.servlet.login_page")), command.execute(request));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -61,6 +61,7 @@ public class LoginCommandTest extends Mockito {
         HttpServletRequest request = getHttpServletRequest();
         when(request.getParameter("login")).thenReturn("");
         when(request.getParameter("password")).thenReturn("");
-        assertEquals(command.execute(request), ConfigurationManager.getProperty("path.servlet.login_page"));
+        assertEquals(command.execute(request), Optional.of(ConfigurationManager.getProperty("path.servlet.login_page")));
     }
+
 }

@@ -24,6 +24,7 @@
         <th><fmt:message key="order.postalCode" bundle="${lang}"/></th>
         <th><fmt:message key="order.country" bundle="${lang}"/></th>
         <th><fmt:message key="order.date" bundle="${lang}"/></th>
+
         <th><fmt:message key="order.periodicals" bundle="${lang}"/></th>
     </tr>
 

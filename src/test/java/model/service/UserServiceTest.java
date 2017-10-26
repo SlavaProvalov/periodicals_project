@@ -16,7 +16,7 @@ public class UserServiceTest extends Mockito {
 
     @Test(expected = InvalidPasswordException.class)
     public void login_withWrongPass() throws Exception {
-        service.login("prov", "1234567");
+        service.login("prov", "000000");
     }
 
     @Test(expected = UserNotFoundException.class)

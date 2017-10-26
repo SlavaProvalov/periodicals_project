@@ -43,7 +43,9 @@ public class JdbcPeriodicalDao implements PeriodicalDAO, StringConstants {
             ResultSet rs = query.executeQuery();
             while (rs.next()) {
                 Periodical periodical = createPeriodicalFromRS(rs);
-                result.add(periodical);
+                if (periodical.getId() > 0) {
+                    result.add(periodical);
+                }
             }
         }
         return result;
@@ -68,7 +70,10 @@ public class JdbcPeriodicalDao implements PeriodicalDAO, StringConstants {
             query.setInt(1, id);
             ResultSet rs = query.executeQuery();
             while (rs.next()) {
-                result.add(createPeriodicalFromRS(rs));
+                Periodical periodical = createPeriodicalFromRS(rs);
+                if (periodical.getId() > 0) {
+                    result.add(periodical);
+                }
             }
         }
     }

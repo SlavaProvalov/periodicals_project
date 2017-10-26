@@ -14,19 +14,33 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class OrderCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(OrderCommand.class);
+    private static OrderCommand instance;
+    private static Logger log;
     private static OrderService service;
 
-    public OrderCommand() {
+    private OrderCommand() {
         service = OrderService.getInstance();
+        log = Logger.getLogger(OrderCommand.class);
+    }
+
+    public static OrderCommand getInstance() {
+        if (instance == null) {
+            instance = new OrderCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession();
         try {
             Order order = EntityBuilder.createOrderFromRequest(request, session);
+            int month = Integer.parseInt(request.getParameter("months"));
+            int discount = service.countDiscount(month);
+            long totalPrice = service.countOrderPrice(order, discount);
+            session.setAttribute("discount", discount);
+            session.setAttribute("total_cost", totalPrice);
             service.createNewOrder(order);
             page = Optional.of(ConfigurationManager.getProperty("path.servlet.order_confirm"));
         } catch (SQLException e) {
@@ -34,6 +48,6 @@ public class OrderCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.cart");
         }
-        return page.get();
+        return page;
     }
 }

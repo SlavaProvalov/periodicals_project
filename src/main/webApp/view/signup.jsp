@@ -53,7 +53,7 @@
     <br/>
 
     <p><b><fmt:message key="signUp.phone" bundle="${lang}"/> :</b></p>
-    <input type="tel" class="textbox" name="phone"
+    <input type="tel" class="textbox" name="phone" minlength="8" maxlength="20"
            pattern="<fmt:message key="pattern.phone" bundle="${pattern}"/>"
            value="${phone_value}" placeholder="<fmt:message key="signUp.phoneStandard" bundle="${lang}"/>"/>
     <br/>

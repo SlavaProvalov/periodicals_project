@@ -1,6 +1,7 @@
 package model.service;
 
 import model.entity.Order;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -10,14 +11,14 @@ import static org.junit.Assert.assertTrue;
 
 public class OrderServiceTest extends Mockito {
     OrderService service = OrderService.getInstance();
-
+    @Ignore
     @Test
     public void getAllOrders_normal() throws Exception {
         List<Order> orders = service.getAllOrders();
         assertTrue(orders.size() > 0);
 
     }
-
+    @Ignore
     @Test
     public void getOrdersByClient_normal() throws Exception {
         List<Order> orders = service.getOrdersByClient(7);

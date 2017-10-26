@@ -29,6 +29,9 @@ public class CurrencyTag extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
         String result = String.valueOf(value * rate);
+        if (value * rate < 0) {
+            throw new IllegalArgumentException();
+        }
         String unit;
         int length = result.length();
         if (length < 3) {

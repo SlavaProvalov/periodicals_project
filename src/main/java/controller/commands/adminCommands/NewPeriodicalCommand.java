@@ -16,20 +16,29 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class NewPeriodicalCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(NewPeriodicalCommand.class);
-    private MessageManager messageManager;
+    private static NewPeriodicalCommand instance;
+    private static Logger log;
     private static PeriodicalService service;
-    private static ContextStorage contextStorage = ContextStorage.getInstance();
+    private static ContextStorage contextStorage;
 
-    public NewPeriodicalCommand() {
+    private NewPeriodicalCommand() {
         service = PeriodicalService.getInstance();
+        contextStorage = ContextStorage.getInstance();
+        log = Logger.getLogger(NewPeriodicalCommand.class);
+    }
+
+    public static NewPeriodicalCommand getInstance() {
+        if (instance == null) {
+            instance = new NewPeriodicalCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession();
-        messageManager = (MessageManager) session.getAttribute("messageManager");
+        MessageManager messageManager = (MessageManager) session.getAttribute("messageManager");
         try {
             Periodical periodical = EntityBuilder.createPeriodicalFromRequest(request);
             service.createNewPeriodical(periodical);
@@ -43,7 +52,7 @@ public class NewPeriodicalCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.newPeriodical");
         }
-        return page.get();
+        return page;
     }
 
 

@@ -38,7 +38,9 @@
            pattern="<fmt:message key="pattern.country" bundle="${pattern}"/>"
            value="${country_value}"/>
     <br/>
-
+    <b><fmt:message key="order.subscription_end_date" bundle="${lang}"/>: </b>
+    <input type="number" min="1" max="24" minlength="1" maxlength="2" class="textbox" name="months" value="${months_value}"/>
+    <br/>
     <input type="submit" class="button" value="<fmt:message key="order.submit" bundle="${lang}"/>">
 </form>
 </body>

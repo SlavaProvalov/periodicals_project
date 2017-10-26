@@ -12,11 +12,24 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class CheckAllOrdersCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(CheckAllOrdersCommand.class);
-    private static OrderService service = OrderService.getInstance();
+    private static CheckAllOrdersCommand instance;
+    private static Logger log;
+    private static OrderService service;
+
+    private CheckAllOrdersCommand() {
+        log = Logger.getLogger(CheckAllOrdersCommand.class);
+        service = OrderService.getInstance();
+    }
+
+    public static CheckAllOrdersCommand getInstance() {
+        if (instance == null) {
+            instance = new CheckAllOrdersCommand();
+        }
+        return instance;
+    }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         Optional<String> page;
         HttpSession session = request.getSession();
         try {
@@ -28,6 +41,6 @@ public class CheckAllOrdersCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.servlet.logout");
         }
-        return page.get();
+        return page;
     }
 }

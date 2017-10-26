@@ -17,7 +17,7 @@ public class SecurityFilterTest extends Mockito {
 
 
     @Test
-    public void doFilterNormal() throws Exception {
+    public void doFilter_normal() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
@@ -30,7 +30,7 @@ public class SecurityFilterTest extends Mockito {
     }
 
     @Test
-    public void doFilterWrongAction() throws Exception {
+    public void doFilter_wrongAction() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);

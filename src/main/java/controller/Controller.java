@@ -32,7 +32,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
-        Optional<String> page = Optional.ofNullable(command.execute(request));
+        Optional<String> page = command.execute(request);
 
         if (page.isPresent()) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page.get());

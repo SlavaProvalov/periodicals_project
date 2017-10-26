@@ -29,6 +29,11 @@ public class OrderBuilder {
         return this;
     }
 
+    public OrderBuilder setOrderEndDate(LocalDateTime date){
+        this.order.setOrderEndDate(date);
+        return this;
+    }
+
     public OrderBuilder setAddress(String address) {
         this.order.setAddress(address);
         return this;

@@ -46,7 +46,7 @@
     <br/>
 
     <b><fmt:message key="signUp.phone" bundle="${lang}"/> :</b>
-    <input type="text" class="textbox" name="phone"
+    <input type="text" class="textbox" name="phone" minlength="8" maxlength="20"
            pattern="<fmt:message key="pattern.phone" bundle="${pattern}"/>"
            value="${phone_prev}"/>
     <br/>

@@ -12,15 +12,24 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class WelcomeCommand implements ActionCommand {
-    private static final Logger log = Logger.getLogger(WelcomeCommand.class);
+    private static WelcomeCommand instance;
+    private static Logger log;
     private static PeriodicalService service;
 
-    public WelcomeCommand() {
+    private WelcomeCommand() {
         service = PeriodicalService.getInstance();
+        log = Logger.getLogger(WelcomeCommand.class);
+    }
+
+    public static WelcomeCommand getInstance() {
+        if (instance == null) {
+            instance = new WelcomeCommand();
+        }
+        return instance;
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
 
         Optional<String> page;
         HttpSession session = request.getSession(true);
@@ -37,7 +46,7 @@ public class WelcomeCommand implements ActionCommand {
             page = Optional.of(ConfigurationManager.getProperty("path.page.error"));
             ErrorConstructor.fillErrorPage(request, e, "path.page.index");
         }
-        return page.get();
+        return page;
     }
 
 }

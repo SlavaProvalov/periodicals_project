@@ -48,12 +48,28 @@ public class OrderService {
         }
     }
 
-    public long countOrderPrice(Order order) {
+    public long countOrderPrice(Order order, int discount) {
         long summary = 0;
         for (Periodical periodical : order.getPeriodicals()) {
             summary += periodical.getSubscriptionPrice();
         }
-        return summary;
+        long result = (summary * 100) - (discount * summary);
+        return result / 100;
+    }
+
+    public int countDiscount(int month) {
+        if (month < 0) {
+            return 0;
+        }
+        int discount = 0;
+        int maxDiscount = 50;
+        if (month > 2) {
+            discount += month * 5;
+            if (discount > maxDiscount) {
+                discount = maxDiscount;
+            }
+        }
+        return discount;
     }
 
     public boolean createNewOrder(Order order) throws SQLException {
@@ -64,6 +80,8 @@ public class OrderService {
             orderDAO.insertOrderDetails(order);
             connection.commit();
             return result != 0;
+        } finally {
+
         }
     }
 }

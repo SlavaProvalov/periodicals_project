@@ -10,6 +10,7 @@ public class Order {
     private int id;
     private int clientId;
     private LocalDateTime orderDate;
+    private LocalDateTime orderEndDate;
     private String address;
     private String city;
     private String postalCode;
@@ -41,6 +42,14 @@ public class Order {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public LocalDateTime getOrderEndDate() {
+        return orderEndDate;
+    }
+
+    public void setOrderEndDate(LocalDateTime orderEndDate) {
+        this.orderEndDate = orderEndDate;
     }
 
     public String getAddress() {

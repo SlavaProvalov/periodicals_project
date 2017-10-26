@@ -1,4 +1,4 @@
-package controller.commands.userCommands;
+package controller.commands.orderCommands;
 
 import controller.ContextStorage;
 import controller.commands.ActionCommand;
@@ -12,14 +12,22 @@ import java.util.Optional;
 import java.util.Set;
 
 public class DeleteFromCartCommand implements ActionCommand {
+    private static DeleteFromCartCommand instance;
     private static ContextStorage contextStorage;
 
-    public DeleteFromCartCommand() {
+    private DeleteFromCartCommand() {
         contextStorage = ContextStorage.getInstance();
     }
 
+    public static DeleteFromCartCommand getInstance() {
+        if (instance == null) {
+            instance = new DeleteFromCartCommand();
+        }
+        return instance;
+    }
+
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("Item_id"));
         HttpSession session = request.getSession();
         Set<Periodical> cart = (Set<Periodical>) session.getAttribute("cart");
@@ -28,6 +36,6 @@ public class DeleteFromCartCommand implements ActionCommand {
         request.getSession().setAttribute("items", cart.size() > 0 ?
                 cart.size() : ((PageContextManager) session.getAttribute("pageContextManager")).getProperty("cart.empty"));
         Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.servlet.cart"));
-        return page.get();
+        return page;
     }
 }

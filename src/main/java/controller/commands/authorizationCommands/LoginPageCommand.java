@@ -7,11 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public class LoginPageCommand implements ActionCommand {
+    private static LoginPageCommand instance;
+
+    private LoginPageCommand() {
+    }
+
+    public static LoginPageCommand getInstance() {
+        if (instance == null) {
+            instance = new LoginPageCommand();
+        }
+        return instance;
+    }
+
     @Override
-    public String execute(HttpServletRequest request) {
+    public Optional<String> execute(HttpServletRequest request) {
         request.getSession().setAttribute("currentPage", request.getRequestURI());
         Optional<String> page = Optional.of(ConfigurationManager.getProperty("path.page.login"));
-        return page.get();
+        return page;
     }
 
 

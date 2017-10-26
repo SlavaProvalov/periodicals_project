@@ -8,10 +8,12 @@ import org.mockito.Mockito;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 
 public class WelcomeCommandTest extends Mockito {
-    WelcomeCommand command = new WelcomeCommand();
+    WelcomeCommand command = WelcomeCommand.getInstance();
 
     private HttpServletRequest getRequest() {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -25,7 +27,7 @@ public class WelcomeCommandTest extends Mockito {
     @Test
     public void execute_normal() throws Exception {
         HttpServletRequest request = getRequest();
-        assertEquals(ConfigurationManager.getProperty("path.page.welcome"), command.execute(request));
+        assertEquals(Optional.of(ConfigurationManager.getProperty("path.page.welcome")), command.execute(request));
     }
 
 
